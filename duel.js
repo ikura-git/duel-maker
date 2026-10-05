@@ -11,8 +11,8 @@ let cardText=[],keyword=['S・トリガー','G・ストライク','W・ブレイ
 function setup() {
     createCanvas(620,600);
     background("lightblue");
-    cardX=300,cardY=40;
-    cardSize=1;
+    cardX=0,cardY=0;
+    cardSize=1.5;
     angleMode(DEGREES);
     HTMLyouso();
 }
@@ -102,7 +102,7 @@ function colorSelect(){//色によって異なるもの
             rect(cardX+2*cardSize,cardY+388*cardSize,297*cardSize,1*cardSize);
         }
         stroke("#261817");
-        if(textlong<=50){
+        if(textlong<=(50*cardSize)){
             rect(cardX+10*cardSize,cardY+250*cardSize,cardSize*70,cardSize*15,cardSize*10);//カードタイプ枠
         }else{
             rect(cardX+10*cardSize,cardY+250*cardSize,cardSize*(70+textlong/2),cardSize*15,cardSize*10);//カードタイプ枠
@@ -143,42 +143,42 @@ function cardTypeSelect(){
 }
 
 function cardContentDraw(){
-    strokeWeight(1);
+    strokeWeight(1*cardSize);
     stroke("black");
     fill("black");
-    textSize(16);
+    textSize(16*cardSize);
     textAlign(CENTER);
-    text(cardContent[0].value(),465,83);//クリーチャー欄
-    textSize(8);
+    text(cardContent[0].value(),cardX+165*cardSize,cardY+43*cardSize);//クリーチャー欄
+    textSize(8*cardSize);
     textlong=textWidth(cardContent[3].value());
-    if(textlong<=50){
+    if(textlong<=(50*cardSize)){
         textAlign(CENTER);
-        text(cardContent[3].value(),346,300);//カードタイプ欄
+        text(cardContent[3].value(),cardX+46*cardSize,cardY+260*cardSize);//カードタイプ欄
     }else{
         textAlign(LEFT);
-        text(cardContent[3].value(),325,300);//カードタイプ欄
+        text(cardContent[3].value(),cardX+25*cardSize,cardY+260*cardSize);//カードタイプ欄
     }
-    textSize(20);
-    strokeWeight(3);
+    textSize(20*cardSize);
+    strokeWeight(3*cardSize);
     fill("white");
     textAlign(CENTER);
-    text(cardContent[2].value(),329,73);//マナコスト欄
-    textSize(7);
+    text(cardContent[2].value(),cardX+29*cardSize,cardY+33*cardSize);//マナコスト欄
+    textSize(7*cardSize);
     strokeWeight(0);
     stroke("white");
     textAlign(CENTER);
-    text(cardContent[1].value(),465,96);//種族欄
-    textSize(18);
+    text(cardContent[1].value(),cardX+165*cardSize,cardY+56*cardSize);//種族欄
+    textSize(18*cardSize);
     fill("white");
     textAlign(CENTER);
-    text(cardContent[4].value(),340,430);//パワー欄
+    text(cardContent[4].value(),cardX+40*cardSize,cardY+390*cardSize);//パワー欄
     push();
-    textSize(20);
-    strokeWeight(3);
+    textSize(20*cardSize);
+    strokeWeight(3*cardSize);
     fill("white");
     stroke("black");
     textAlign(CENTER,CENTER);//マナ埋め時コスト
-    translate(450,414);
+    translate(cardX+150*cardSize,cardY+374*cardSize);
     rotate(180)
     text("1",0,0);
     rotate(180);
@@ -235,8 +235,8 @@ function updateText(){
         }
         
     }
-    textSize(8);
+    textSize(8*cardSize);
     fill("black");
     textAlign(LEFT);
-    text(textup,320,320);
+    text(textup,cardX+20*cardSize,cardY+280*cardSize);
 }
