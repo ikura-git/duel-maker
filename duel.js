@@ -228,7 +228,7 @@ function updateText(){
           lines[i] = '■'; 
         }
     }
-    textup=lines.join('\n');
+    textup=lines.join('。\n');
     for(let i=0;i<keyword.length;i++){
         if(cardText[keyword.length-i-1].checked()){
             textup='■'+keyword[keyword.length-i-1]+'\n'+textup;
@@ -238,5 +238,5 @@ function updateText(){
     textSize(8);
     fill("black");
     textAlign(LEFT);
-    text(textup,320,320,550);
+    text(textup,320,320);
 }
