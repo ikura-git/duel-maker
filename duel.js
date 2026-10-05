@@ -1,12 +1,12 @@
-let card,zenaku,taid,maxi;
+let zenaku,taid,maxi;
 let cardX,cardY,cardSize;
 let img;//画像読み込み
 let colorPie=['光','水','闇','火','自然'];//文明
 let bunmei,culture=[],iro=[],trueCount;//文明セレクトに使用
 let cardType,cardSelect;
+let cardContent=[],textSup=['カード名','種族','マナコスト','カードタイプ','パワー'];
 
 function preload(){
-    card=loadImage("res/joecard.jpg");
     zenaku=loadImage("res/RP3S6.jpg");
     taid=loadImage("res/24EX1_41.jpg");
     maxi=loadImage("res/maxi2.jpg");
@@ -25,14 +25,13 @@ function setup() {
         bunmei.position(300+50*i,620);
         culture.push(bunmei)
     }
-    cardSelect = createSelect();
-    cardSelect.position(10, 650); 
-    cardSelect.option('クリーチャー');
-    cardSelect.option('進化クリーチャー');
-    cardSelect.option('呪文');
-    cardSelect.option('タマシード');
-    cardSelect.option('その他');
-    cardSelect.selected('呪文');
+    cardTypeSelect();
+    for(i=0;i<textSup.length;i++){
+    let cards=createInput('');
+    cards.position(20,700+40*i);//カードの内容の入力欄
+    cards.attribute('placeholder', textSup[i]);
+    cardContent.push(cards);
+    }
 }
 
 function draw() {
@@ -48,6 +47,7 @@ function draw() {
             iro[i]=false;
         }
     }
+    cardContentDraw();
 }
 
 function cardDraw(){
@@ -140,4 +140,52 @@ function handleFile(file){
         alert("画像ファイルを選択してください");
     }
 
+}
+
+function cardTypeSelect(){
+    cardSelect = createSelect();
+    cardSelect.position(10, 650); 
+    cardSelect.option('クリーチャー');
+    cardSelect.option('進化クリーチャー');
+    cardSelect.option('呪文');
+    cardSelect.option('タマシード');
+    cardSelect.option('その他');
+    cardSelect.selected('クリーチャー');
+}
+
+function cardContentDraw(){
+    strokeWeight(1);
+    stroke("black");
+    fill("black");
+    textSize(16);
+    textAlign(CENTER);
+    text(cardContent[0].value(),465,83);//クリーチャー欄
+    textSize(8);
+    textAlign(LEFT);
+    text(cardContent[3].value(),322,300);//カードタイプ欄
+    textSize(20);
+    strokeWeight(3);
+    fill("white");
+    textAlign(CENTER);
+    text(cardContent[2].value(),329,73);//マナコスト欄
+    textSize(7);
+    strokeWeight(0);
+    stroke("white");
+    textAlign(CENTER);
+    text(cardContent[1].value(),465,96);//種族欄
+    textSize(18);
+    fill("white");
+    textAlign(CENTER);
+    text(cardContent[4].value(),340,430);//パワー欄
+    push();
+    textSize(20);
+    strokeWeight(3);
+    fill("white");
+    stroke("black");
+    textAlign(CENTER,CENTER);//マナ埋め時コスト
+    translate(450,414);
+    rotate(180)
+    text("1",0,0);
+    rotate(180);
+    pop();
 }
