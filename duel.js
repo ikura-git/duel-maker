@@ -1,17 +1,12 @@
-let zenaku,taid,maxi;
 let cardX,cardY,cardSize;
 let img;//画像読み込み
 let colorPie=['光','水','闇','火','自然'];//文明
 let bunmei,culture=[],iro=[],trueCount;//文明セレクトに使用
-let cardType,cardSelect;
+let cardType,cardSelect,cards,textlong;
 let cardContent=[],textSup=['カード名','種族','マナコスト','カードタイプ','パワー'];
-
-function preload(){
-    zenaku=loadImage("res/RP3S6.jpg");
-    taid=loadImage("res/24EX1_41.jpg");
-    maxi=loadImage("res/maxi2.jpg");
-    
-}
+let saveButton;
+let cardTextarea;
+let cardText=[],keyword=['S・トリガー','G・ストライク','W・ブレイカー','スピードアタッカー','ジャストダイバー','マッハファイター','スレイヤー','ブロッカー'];
 
 function setup() {
     createCanvas(620,600);
@@ -19,24 +14,11 @@ function setup() {
     cardX=300,cardY=40;
     cardSize=1;
     angleMode(DEGREES);
-    let fileInput = createFileInput(handleFile);//ファイル入力
-    for(let i=0;i<colorPie.length;i++){//チェックボックス入力
-        bunmei=createCheckbox(colorPie[i],false);
-        bunmei.position(300+50*i,620);
-        culture.push(bunmei)
-    }
-    cardTypeSelect();
-    for(i=0;i<textSup.length;i++){
-    let cards=createInput('');
-    cards.position(20,700+40*i);//カードの内容の入力欄
-    cards.attribute('placeholder', textSup[i]);
-    cardContent.push(cards);
-    }
+    HTMLyouso();
 }
 
 function draw() {
     background("lightblue");
-    //image(card,100,40,300,400);
     cardDraw();
     trueCount=0;
     for (let i = 0; i < culture.length; i++) {//選択中の文明を記録
@@ -48,11 +30,19 @@ function draw() {
         }
     }
     cardContentDraw();
+    if(cardType=='クリーチャー'||cardType=='進化クリーチャー'){
+        cards.show();//クリーチャーならパワー欄の表示
+    }else{
+        cards.hide();
+    }
+    updateText();
 }
 
 function cardDraw(){
     cardType=cardSelect.value();//カードタイプを計測
-    //image(maxi,0,40,300,400);
+    if(cardType!='その他'){
+        cardContent[3].value(cardType);
+    }
     strokeWeight(16*cardSize);
     stroke("#261817");
     fill("#EEE2E2");
@@ -74,9 +64,8 @@ function cardDraw(){
     triangle(cardX+47*cardSize,cardY+41*cardSize,cardX+47*cardSize,cardY+24*cardSize,cardX+40*cardSize,cardY+24*cardSize);
     colorSelect();
     fill("#261817");
+    stroke("#261817");
     rect(cardX+2*cardSize,cardY+245*cardSize,13*cardSize,17*cardSize);
-
-    //image(maxi,300,0,300,400);
 }
 
 function colorSelect(){//色によって異なるもの
@@ -113,19 +102,19 @@ function colorSelect(){//色によって異なるもの
             rect(cardX+2*cardSize,cardY+388*cardSize,297*cardSize,1*cardSize);
         }
         stroke("#261817");
-        rect(cardX+10*cardSize,cardY+250*cardSize,cardSize*70,cardSize*15,cardSize*10);//カードタイプ枠
+        if(textlong<=50){
+            rect(cardX+10*cardSize,cardY+250*cardSize,cardSize*70,cardSize*15,cardSize*10);//カードタイプ枠
+        }else{
+            rect(cardX+10*cardSize,cardY+250*cardSize,cardSize*(70+textlong/2),cardSize*15,cardSize*10);//カードタイプ枠
+        }
         circle(cardX+29*cardSize,cardY+26*cardSize,40*cardSize);//左上マナコスト枠
         circle(cardX+150*cardSize,cardY+373*cardSize,40*cardSize);//下部マナコスト枠
         } 
 }
 
-function mouseClicked(){
-   
-}
-
-function save(){
-    let saveCambus=get(100,40,300,400);
-    saveCambus.save('test','png');
+function cardSave(){
+    let saveCambus=get(cardX,cardY,300*cardSize,400*cardSize);
+    saveCambus.save(cardContent[0].value(),'png');
 }
 
 document.oncontextmenu = () => {
@@ -161,8 +150,14 @@ function cardContentDraw(){
     textAlign(CENTER);
     text(cardContent[0].value(),465,83);//クリーチャー欄
     textSize(8);
-    textAlign(LEFT);
-    text(cardContent[3].value(),322,300);//カードタイプ欄
+    textlong=textWidth(cardContent[3].value());
+    if(textlong<=50){
+        textAlign(CENTER);
+        text(cardContent[3].value(),346,300);//カードタイプ欄
+    }else{
+        textAlign(LEFT);
+        text(cardContent[3].value(),325,300);//カードタイプ欄
+    }
     textSize(20);
     strokeWeight(3);
     fill("white");
@@ -188,4 +183,60 @@ function cardContentDraw(){
     text("1",0,0);
     rotate(180);
     pop();
+}
+
+function HTMLyouso(){
+    let fileInput = createFileInput(handleFile);//ファイル入力
+    for(let i=0;i<colorPie.length;i++){//チェックボックス入力
+        bunmei=createCheckbox(colorPie[i],false);
+        bunmei.position(300+50*i,620);
+        culture.push(bunmei)
+    }
+    cardTypeSelect();
+    for(i=0;i<textSup.length;i++){
+    cards=createInput('');
+    cards.position(20,700+30*i);//カードの内容の入力欄
+    cards.attribute('placeholder', textSup[i]);
+    cardContent.push(cards);
+    }
+    saveButton=createButton('保存');
+    saveButton.position(580,620);//保存ボタンの設定
+    saveButton.mousePressed(cardSave);
+    cardTextarea = createElement('textarea', '');
+    cardTextarea.attribute('placeholder', '効果を入力');//カードの効果欄の設定
+    cardTextarea.position(300, 750);
+    cardTextarea.size(300, 150);
+    cardeffect();
+}
+
+function cardeffect(){
+    for(let i=0;i<keyword.length;i++){//チェックボックス入力
+        let cards=createCheckbox(keyword[i],false);
+        cards.position(300+200*(i%2),650+20*int((i)/2));
+        cardText.push(cards)
+    }
+}
+
+function updateText(){
+    let textup=cardTextarea.value();
+    let lines = textup.split('。\n');
+    for (let i = 0; i < lines.length; i++) {
+        // 行が空行（未入力）でない場合のみ■をつける
+        if (lines[i].length > 0) {
+        lines[i] = '■ ' + lines[i];
+        } else {
+          lines[i] = '■'; 
+        }
+    }
+    textup=lines.join('\n');
+    for(let i=0;i<keyword.length;i++){
+        if(cardText[keyword.length-i-1].checked()){
+            textup='■'+keyword[keyword.length-i-1]+'\n'+textup;
+        }
+        
+    }
+    textSize(8);
+    fill("black");
+    textAlign(LEFT);
+    text(textup,320,320,550);
 }
