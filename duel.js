@@ -128,6 +128,21 @@ function colorSelect(){//色によって異なるもの
             for(let i=0;i<trueCount;i++){
                 if(trueCount==2){
                     multiColorSelect();
+                    if(i==0){
+                        push();
+                        strokeWeight(3*cardSize);
+                        rect(cardX+2*cardSize,cardY+365*cardSize,68*cardSize,1*cardSize);
+                        rect(cardX+84*cardSize,cardY+388*cardSize,68*cardSize,1*cardSize);
+                        rectMode(CENTER);
+                        translate(cardX+75*cardSize,cardY+374*cardSize);
+                        rotate(64);
+                        rect(3*cardSize,0,26*cardSize,1*cardSize,1*cardSize);
+                        pop();
+                    }else{
+                        strokeWeight(3*cardSize);
+                        rect(cardX+165*cardSize,cardY+388*cardSize,134*cardSize,1*cardSize);
+                    }
+                    strokeWeight(0);
                     let arc1=45+i*180;
                     if(arc1>360)arc1-=360;
                     let arc2=225+i*180;
@@ -146,6 +161,24 @@ function colorSelect(){//色によって異なるもの
                     }
                 }else if(trueCount==3){
                     multiColorSelect();
+                    if(i==0){
+                        push();
+                        strokeWeight(3*cardSize);
+                        rect(cardX+2*cardSize,cardY+365*cardSize,68*cardSize,1*cardSize);
+                        rect(cardX+82*cardSize,cardY+388*cardSize,5*cardSize,1*cardSize);
+                        rectMode(CENTER);
+                        translate(cardX+75*cardSize,cardY+374*cardSize);
+                        rotate(64);
+                        rect(3*cardSize,0,26*cardSize,1*cardSize,1*cardSize);
+                        pop();
+                    }else if(i==1){
+                        strokeWeight(3*cardSize);
+                        rect(cardX+87*cardSize,cardY+388*cardSize,128*cardSize,1*cardSize);
+                    }else{
+                        strokeWeight(3*cardSize);
+                        rect(cardX+215*cardSize,cardY+388*cardSize,84*cardSize,1*cardSize);
+                    }
+                    strokeWeight(0);
                     let arc1=150+i*120;
                     if(arc1>360)arc1-=360;
                     let arc2=270+i*120;
@@ -166,6 +199,27 @@ function colorSelect(){//色によって異なるもの
                     }
                 }else if(trueCount==4){
                     multiColorSelect();
+                    if(i==0){
+                        strokeWeight(3*cardSize);
+                        rect(cardX+2*cardSize,cardY+365*cardSize,60*cardSize,1*cardSize);
+                    }else if(i==1){
+                        push();
+                        strokeWeight(3*cardSize);
+                        rect(cardX+62*cardSize,cardY+365*cardSize,6*cardSize,1*cardSize);
+                        rect(cardX+84*cardSize,cardY+388*cardSize,68*cardSize,1*cardSize);
+                        rectMode(CENTER);
+                        translate(cardX+75*cardSize,cardY+374*cardSize);
+                        rotate(64);
+                        rect(3*cardSize,0,26*cardSize,1*cardSize,1*cardSize);
+                        pop();
+                    }else if(i==2){
+                        strokeWeight(3*cardSize);
+                        rect(cardX+165*cardSize,cardY+388*cardSize,75*cardSize,1*cardSize);
+                    }else{
+                        strokeWeight(3*cardSize);
+                        rect(cardX+230*cardSize,cardY+388*cardSize,69*cardSize,1*cardSize,2);
+                    }
+                    strokeWeight(0);
                     let arc1=135+i*90;
                     if(arc1>360)arc1-=360;
                     let arc2=225+i*90;
@@ -210,6 +264,10 @@ function colorSelect(){//色によって異なるもの
             }
             fill("#261817");
             rect(cardX+4*cardSize,cardY+245*cardSize,12*cardSize,19*cardSize);
+            noFill();
+            stroke("#261817");
+            strokeWeight(3*cardSize);
+            circle(cardX+150*cardSize,cardY+373*cardSize,40*cardSize);//下部マナコスト枠
         } 
 }
 
