@@ -15,7 +15,7 @@ function setup() {
     createCanvas(620,600);
     background("lightblue");
     cardX=0,cardY=0;
-    cardSize=1;
+    cardSize=1.5;
     angleMode(DEGREES);
     HTMLyouso();
 }
