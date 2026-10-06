@@ -3,6 +3,7 @@ let img;//画像読み込み
 let colorPie=['光','水','闇','火','自然'];//文明
 let bunmei,culture=[],iro=[],trueCount;//文明セレクトに使用
 let cardType,cardSelect,cards,textlong;
+let rareSelect;
 let cardContent=[],textSup=['カード名','種族','マナコスト','カードタイプ','パワー'];
 let saveButton;
 let cardTextarea;
@@ -14,7 +15,7 @@ function setup() {
     createCanvas(620,600);
     background("lightblue");
     cardX=0,cardY=0;
-    cardSize=1.5;
+    cardSize=1;
     angleMode(DEGREES);
     HTMLyouso();
 }
@@ -40,6 +41,11 @@ function draw() {
         cards.value('');
     }
     updateText();
+    textAlign(CENTER);
+    fill("#261817");
+    rect(cardX+208*cardSize,cardY+365*cardSize,25*cardSize,15*cardSize,4*cardSize);
+    fill("white");
+    text(rareSelect.value(),cardX+220*cardSize,cardY+375*cardSize);
 }
 
 function cardDraw(){
@@ -52,20 +58,29 @@ function cardDraw(){
     fill("#EEE2E2");
     rect(cardX+8*cardSize,cardY+8*cardSize,cardSize*300-15*cardSize,cardSize*400-15*cardSize,cardSize*10);//カード枠
     if(img!=null){
-        image(img,cardX+16*cardSize,cardY+16*cardSize,269*cardSize,250*cardSize,0,0,1000,1000);//カード画像読み込み
+        if(rareSelect.value()!='SR'){
+            image(img,cardX+16*cardSize,cardY+16*cardSize,269*cardSize,250*cardSize,0,0,10000,10000);//カード画像読み込み
+        }else{
+          image(img,cardX+16*cardSize,cardY+16*cardSize,269*cardSize,370*cardSize,0,0,10000,10000);//カード画像読み込み  
+        }
     }
     strokeWeight(3*cardSize);
-    fill("#261817");
-    rect(cardX+50*cardSize,cardY+24*cardSize,241*cardSize,33*cardSize);//種族欄
-    triangle(cardX+47*cardSize,cardY+52*cardSize,cardX+47*cardSize,cardY+24*cardSize,cardX+35*cardSize,cardY+24*cardSize);
+    if(rareSelect.value()!='SR'){
+        fill("#261817");
+        stroke("#261817");
+        rect(cardX+50*cardSize,cardY+24*cardSize,241*cardSize,33*cardSize);//種族欄
+        triangle(cardX+47*cardSize,cardY+52*cardSize,cardX+47*cardSize,cardY+24*cardSize,cardX+35*cardSize,cardY+24*cardSize);
+        fill("#EEE2E2");
+        stroke("#EEE2E2");
+        rect(cardX+50*cardSize,cardY+16*cardSize,233*cardSize,30*cardSize);//クリーチャー名前欄
+        triangle(cardX+47*cardSize,cardY+41*cardSize,cardX+47*cardSize,cardY+24*cardSize,cardX+40*cardSize,cardY+24*cardSize);
+    }
     if(cardType=='クリーチャー'||cardType=='進化クリーチャー'||cardContent[4].value()!=''){
+        fill("#261817");
+        stroke("#261817");
         rect(cardX+15*cardSize,cardY+363*cardSize,58*cardSize,33*cardSize,1);//パワー欄
         triangle(cardX+75*cardSize,cardY+368*cardSize,cardX+70*cardSize,cardY+395*cardSize,cardX+86*cardSize,cardY+390*cardSize);
     }
-    fill("#EEE2E2");
-    stroke("#EEE2E2");
-    rect(cardX+50*cardSize,cardY+16*cardSize,233*cardSize,30*cardSize);//クリーチャー名前欄
-    triangle(cardX+47*cardSize,cardY+41*cardSize,cardX+47*cardSize,cardY+24*cardSize,cardX+40*cardSize,cardY+24*cardSize);
     if(textlong<=(50*cardSize)){
                 xsize=70;
             }else{
@@ -377,14 +392,46 @@ function cardTypeSelect(){
     cardSelect.selected('クリーチャー');
 }
 
+function rareTypeSelect(){
+    rareSelect = createSelect();
+    rareSelect.position(150, 650); 
+    rareSelect.option('C');
+    rareSelect.option('UC');
+    rareSelect.option('R');
+    rareSelect.option('VR');
+    rareSelect.option('SR');
+    rareSelect.selected('C');
+}
+
 function cardContentDraw(){
     strokeWeight(1*cardSize);
+    if(rareSelect.value()!='SR'){
+        stroke("black");
+        fill("black");
+        textSize(16*cardSize);
+        textAlign(CENTER);
+        text(cardContent[0].value(),cardX+165*cardSize,cardY+43*cardSize);//クリーチャー欄
+        textSize(10*cardSize);
+        strokeWeight(0*cardSize);
+        stroke("white");
+        fill("white");
+        textAlign(CENTER);
+        text(cardContent[1].value(),cardX+165*cardSize,cardY+56*cardSize);//種族欄
+    }else{
+        stroke("black");
+        fill("white");
+        textSize(16*cardSize);
+        strokeWeight(2*cardSize);
+        textAlign(CENTER);
+        text(cardContent[0].value(),cardX+165*cardSize,cardY+43*cardSize);//クリーチャー欄
+        textSize(10*cardSize);
+        textAlign(CENTER);
+        text(cardContent[1].value(),cardX+165*cardSize,cardY+59*cardSize);//種族欄
+    }
+    strokeWeight(1*cardSize);
+    textSize(8*cardSize);
     stroke("black");
     fill("black");
-    textSize(16*cardSize);
-    textAlign(CENTER);
-    text(cardContent[0].value(),cardX+165*cardSize,cardY+43*cardSize);//クリーチャー欄
-    textSize(8*cardSize);
     textlong=textWidth(cardContent[3].value());
     if(textlong<=(50*cardSize)){
         textAlign(CENTER);
@@ -395,18 +442,10 @@ function cardContentDraw(){
     }
     textSize(20*cardSize);
     strokeWeight(3*cardSize);
+    stroke("black");
     fill("white");
     textAlign(CENTER);
     text(cardContent[2].value(),cardX+29*cardSize,cardY+33*cardSize);//マナコスト欄
-    textSize(7*cardSize);
-    strokeWeight(0);
-    stroke("white");
-    textAlign(CENTER);
-    text(cardContent[1].value(),cardX+165*cardSize,cardY+56*cardSize);//種族欄
-    textSize(18*cardSize);
-    fill("white");
-    textAlign(CENTER);
-    text(cardContent[4].value(),cardX+40*cardSize,cardY+390*cardSize);//パワー欄
     push();
     textSize(20*cardSize);
     strokeWeight(3*cardSize);
@@ -418,6 +457,12 @@ function cardContentDraw(){
     text("1",0,0);
     rotate(180);
     pop();
+    textSize(18*cardSize);
+    strokeWeight(0);
+    fill("white");
+    textAlign(CENTER);
+    text(cardContent[4].value(),cardX+40*cardSize,cardY+390*cardSize);//パワー欄
+    
 }
 
 function HTMLyouso(){
@@ -428,6 +473,7 @@ function HTMLyouso(){
         culture.push(bunmei)
     }
     cardTypeSelect();
+    rareTypeSelect();
     for(i=0;i<textSup.length;i++){
     cards=createInput('');
     cards.position(20,700+30*i);//カードの内容の入力欄
@@ -460,18 +506,26 @@ function updateText(){
         if (lines[i].length > 0) {
         lines[i] = '■ ' + lines[i];
         } else {
-          lines[i] = '■'; 
+          lines[i] = '■ '; 
         }
     }
     textup=lines.join('。\n');
     for(let i=0;i<keyword.length;i++){
         if(cardText[keyword.length-i-1].checked()){
-            textup='■'+keyword[keyword.length-i-1]+'\n'+textup;
+            textup='■ '+keyword[keyword.length-i-1]+'\n'+textup;
         }
         
     }
-    textSize(8*cardSize);
-    fill("black");
+    textSize(9*cardSize);
+    if(rareSelect.value()!='SR'){
+        strokeWeight(0);
+        fill("black");
+        stroke("black");
+    }else{
+        strokeWeight(2*cardSize);
+        fill("white");
+        stroke("black");
+    }
     textAlign(LEFT);
     text(textup,cardX+20*cardSize,cardY+280*cardSize);
 }
