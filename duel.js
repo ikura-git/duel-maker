@@ -7,17 +7,20 @@ let cardContent=[],textSup=['カード名','種族','マナコスト','カード
 let saveButton;
 let cardTextarea;
 let cardText=[],keyword=['S・トリガー','G・ストライク','W・ブレイカー','スピードアタッカー','ジャストダイバー','マッハファイター','スレイヤー','ブロッカー'];
+let colorSelected=[false,false,false,false,false];
+let xsize;
 
 function setup() {
     createCanvas(620,600);
     background("lightblue");
-    cardX=300,cardY=40;
-    cardSize=1;
+    cardX=0,cardY=0;
+    cardSize=1.5;
     angleMode(DEGREES);
     HTMLyouso();
 }
 
 function draw() {
+    
     background("lightblue");
     cardDraw();
     trueCount=0;
@@ -30,10 +33,11 @@ function draw() {
         }
     }
     cardContentDraw();
-    if(cardType=='クリーチャー'||cardType=='進化クリーチャー'){
+    if(cardType=='クリーチャー'||cardType=='進化クリーチャー'||cardType=='その他'){
         cards.show();//クリーチャーならパワー欄の表示
     }else{
         cards.hide();
+        cards.value('');
     }
     updateText();
 }
@@ -54,7 +58,7 @@ function cardDraw(){
     fill("#261817");
     rect(cardX+50*cardSize,cardY+24*cardSize,241*cardSize,33*cardSize);//種族欄
     triangle(cardX+47*cardSize,cardY+52*cardSize,cardX+47*cardSize,cardY+24*cardSize,cardX+35*cardSize,cardY+24*cardSize);
-    if(cardType=='クリーチャー'||cardType=='進化クリーチャー'){
+    if(cardType=='クリーチャー'||cardType=='進化クリーチャー'||cardContent[4].value()!=''){
         rect(cardX+15*cardSize,cardY+363*cardSize,58*cardSize,33*cardSize,1);//パワー欄
         triangle(cardX+75*cardSize,cardY+368*cardSize,cardX+70*cardSize,cardY+395*cardSize,cardX+86*cardSize,cardY+390*cardSize);
     }
@@ -62,10 +66,16 @@ function cardDraw(){
     stroke("#EEE2E2");
     rect(cardX+50*cardSize,cardY+16*cardSize,233*cardSize,30*cardSize);//クリーチャー名前欄
     triangle(cardX+47*cardSize,cardY+41*cardSize,cardX+47*cardSize,cardY+24*cardSize,cardX+40*cardSize,cardY+24*cardSize);
+    if(textlong<=(50*cardSize)){
+                xsize=70;
+            }else{
+                if(cardSize==1)xsize=(textlong+25);
+                if(cardSize==1.5)xsize=(textlong-5);
+            }
     colorSelect();
     fill("#261817");
     stroke("#261817");
-    rect(cardX+2*cardSize,cardY+245*cardSize,13*cardSize,17*cardSize);
+    rect(cardX+2*cardSize,cardY+245*cardSize,12*cardSize,19*cardSize);
 }
 
 function colorSelect(){//色によって異なるもの
@@ -89,7 +99,7 @@ function colorSelect(){//色によって異なるもの
             stroke("#E9F7FF");
             fill("#E9F7FF");
         }
-        if(cardType=='クリーチャー'||cardType=='進化クリーチャー'){
+        if(cardType=='クリーチャー'||cardType=='進化クリーチャー'||cardContent[4].value()!=''){
             rect(cardX+84*cardSize,cardY+388*cardSize,215*cardSize,1*cardSize);//下部の文明の線
             rect(cardX+2*cardSize,cardY+365*cardSize,68*cardSize,1*cardSize);
             push();
@@ -102,14 +112,239 @@ function colorSelect(){//色によって異なるもの
             rect(cardX+2*cardSize,cardY+388*cardSize,297*cardSize,1*cardSize);
         }
         stroke("#261817");
-        if(textlong<=50){
-            rect(cardX+10*cardSize,cardY+250*cardSize,cardSize*70,cardSize*15,cardSize*10);//カードタイプ枠
+        if(textlong<=(50*cardSize)){
+            rect(cardX+10*cardSize,cardY+250*cardSize,cardSize*xsize,cardSize*15,cardSize*10);//カードタイプ枠
         }else{
-            rect(cardX+10*cardSize,cardY+250*cardSize,cardSize*(70+textlong/2),cardSize*15,cardSize*10);//カードタイプ枠
+            rect(cardX+10*cardSize,cardY+250*cardSize,cardSize*xsize,cardSize*15,cardSize*10);//カードタイプ枠
         }
         circle(cardX+29*cardSize,cardY+26*cardSize,40*cardSize);//左上マナコスト枠
         circle(cardX+150*cardSize,cardY+373*cardSize,40*cardSize);//下部マナコスト枠
+        }else{
+            stroke("#261817");
+            rect(cardX+10*cardSize,cardY+250*cardSize,cardSize*xsize,cardSize*15,cardSize*10);//カードタイプ枠
+            circle(cardX+29*cardSize,cardY+26*cardSize,40*cardSize);//左上マナコスト枠
+            circle(cardX+150*cardSize,cardY+373*cardSize,40*cardSize);//下部マナコスト枠
+            strokeWeight(0);
+            for(let i=0;i<trueCount;i++){
+                if(trueCount==2){
+                    multiColorSelect();
+                    if(i==0){
+                        if(cardType=='クリーチャー'||cardType=='進化クリーチャー'||cardContent[4].value()!=''){
+                            push();
+                            strokeWeight(3*cardSize);
+                            rect(cardX+2*cardSize,cardY+365*cardSize,68*cardSize,1*cardSize);
+                            rect(cardX+84*cardSize,cardY+388*cardSize,68*cardSize,1*cardSize);
+                            rectMode(CENTER);
+                            translate(cardX+75*cardSize,cardY+374*cardSize);
+                            rotate(64);
+                            rect(3*cardSize,0,26*cardSize,1*cardSize,1*cardSize);
+                            pop();
+                        }else{
+                            strokeWeight(3*cardSize);
+                            rect(cardX+2*cardSize,cardY+388*cardSize,150*cardSize,1*cardSize);
+                        }
+                    }else{
+                        strokeWeight(3*cardSize);
+                        rect(cardX+165*cardSize,cardY+388*cardSize,134*cardSize,1*cardSize);
+                    }
+                    strokeWeight(0);
+                    let arc1=45+i*180;
+                    if(arc1>360)arc1-=360;
+                    let arc2=225+i*180;
+                    if(arc2<0)arc2+=360;
+                    arc(cardX+29*cardSize,cardY+26*cardSize,37*cardSize,37*cardSize,arc1,arc2,PIE);
+                    arc(cardX+150*cardSize,cardY+373*cardSize,37*cardSize,37*cardSize,arc1,arc2,PIE);
+                    if(i==0){//カードタイプ欄の色
+                        push();
+                        strokeWeight(3*cardSize);
+                        stroke("#261817");
+                        rect(cardX+10*cardSize,cardY+250*cardSize,cardSize*xsize,cardSize*15,cardSize*10);//カードタイプ枠
+                        pop();
+                    }else{
+                        rect(cardX+(13+(xsize/2))*cardSize,cardY+251*cardSize,cardSize*(xsize/2-4),cardSize*13,cardSize*10);
+                        quad(cardX+(5+(xsize/2))*cardSize,cardY+251*cardSize,cardX+(25+(xsize/2))*cardSize,cardY+251*cardSize,cardX+(25+(xsize/2))*cardSize,cardY+264*cardSize,cardX+(15+(xsize/2))*cardSize,cardY+264*cardSize);
+                    }
+                }else if(trueCount==3){
+                    multiColorSelect();
+                    if(i==0){
+                        if(cardType=='クリーチャー'||cardType=='進化クリーチャー'||cardContent[4].value()!=''){
+                            push();
+                            strokeWeight(3*cardSize);
+                            rect(cardX+2*cardSize,cardY+365*cardSize,68*cardSize,1*cardSize);
+                            rect(cardX+82*cardSize,cardY+388*cardSize,5*cardSize,1*cardSize);
+                            rectMode(CENTER);
+                            translate(cardX+75*cardSize,cardY+374*cardSize);
+                            rotate(64);
+                            rect(3*cardSize,0,26*cardSize,1*cardSize,1*cardSize);
+                            pop();
+                        }else{
+                           strokeWeight(3*cardSize);
+                            rect(cardX+2*cardSize,cardY+388*cardSize,87*cardSize,1*cardSize); 
+                        }
+                    }else if(i==1){
+                        strokeWeight(3*cardSize);
+                        rect(cardX+87*cardSize,cardY+388*cardSize,128*cardSize,1*cardSize);
+                    }else{
+                        strokeWeight(3*cardSize);
+                        rect(cardX+215*cardSize,cardY+388*cardSize,84*cardSize,1*cardSize);
+                    }
+                    strokeWeight(0);
+                    let arc1=150+i*120;
+                    if(arc1>360)arc1-=360;
+                    let arc2=270+i*120;
+                    if(arc2<0)arc2+=360;
+                    arc(cardX+29*cardSize,cardY+26*cardSize,37*cardSize,37*cardSize,arc1,arc2,PIE);
+                    arc(cardX+150*cardSize,cardY+373*cardSize,37*cardSize,37*cardSize,arc1,arc2,PIE);
+                    if(i==0){//カードタイプ欄の色
+                        push();
+                        strokeWeight(3*cardSize);
+                        stroke("#261817");
+                        rect(cardX+10*cardSize,cardY+250*cardSize,cardSize*xsize,cardSize*15,cardSize*10);//カードタイプ枠
+                        pop();
+                    }else if(i==1){
+                        quad(cardX+(13-5+(xsize/3))*cardSize,cardY+251*cardSize,cardX+(13-5+(xsize*2/3))*cardSize,cardY+251*cardSize,cardX+(13+5+(xsize*2/3))*cardSize,cardY+264*cardSize,cardX+(13+5+(xsize/3))*cardSize,cardY+264*cardSize);
+                    }else if(i==2){
+                        rect(cardX+(16+(xsize*2/3))*cardSize,cardY+251*cardSize,cardSize*(xsize/3-7),cardSize*13,cardSize*10);
+                        quad(cardX+(13-5+(xsize*2/3))*cardSize,cardY+251*cardSize,cardX+(13+10+(xsize*2/3))*cardSize,cardY+251*cardSize,cardX+(13+10+(xsize*2/3))*cardSize,cardY+264*cardSize,cardX+(13+5+(xsize*2/3))*cardSize,cardY+264*cardSize);
+                    }
+                }else if(trueCount==4){
+                    multiColorSelect();
+                    if(i==0){
+                        strokeWeight(3*cardSize);
+                        if(cardType=='クリーチャー'||cardType=='進化クリーチャー'||cardContent[4].value()!=''){
+                            rect(cardX+2*cardSize,cardY+365*cardSize,60*cardSize,1*cardSize);
+                        }else{
+                            rect(cardX+2*cardSize,cardY+388*cardSize,60*cardSize,1*cardSize);
+                        }
+                    }else if(i==1){
+                        if(cardType=='クリーチャー'||cardType=='進化クリーチャー'||cardContent[4].value()!=''){
+                            push();
+                            strokeWeight(3*cardSize);
+                            rect(cardX+62*cardSize,cardY+365*cardSize,6*cardSize,1*cardSize);
+                            rect(cardX+84*cardSize,cardY+388*cardSize,68*cardSize,1*cardSize);
+                            rectMode(CENTER);
+                            translate(cardX+75*cardSize,cardY+374*cardSize);
+                            rotate(64);
+                            rect(3*cardSize,0,26*cardSize,1*cardSize,1*cardSize);
+                            pop();
+                        }else{
+                            strokeWeight(3*cardSize);
+                            rect(cardX+62*cardSize,cardY+388*cardSize,90*cardSize,1*cardSize); 
+                        }
+                    }else if(i==2){
+                        strokeWeight(3*cardSize);
+                        rect(cardX+165*cardSize,cardY+388*cardSize,75*cardSize,1*cardSize);
+                    }else{
+                        strokeWeight(3*cardSize);
+                        rect(cardX+230*cardSize,cardY+388*cardSize,69*cardSize,1*cardSize,2);
+                    }
+                    strokeWeight(0);
+                    let arc1=135+i*90;
+                    if(arc1>360)arc1-=360;
+                    let arc2=225+i*90;
+                    if(arc2<0)arc2+=360;
+                    arc(cardX+29*cardSize,cardY+26*cardSize,37*cardSize,37*cardSize,arc1,arc2,PIE);
+                    arc(cardX+150*cardSize,cardY+373*cardSize,37*cardSize,37*cardSize,arc1,arc2,PIE);
+                    if(i==0){//カードタイプ欄の色
+                        push();
+                        strokeWeight(3*cardSize);
+                        stroke("#261817");
+                        rect(cardX+10*cardSize,cardY+250*cardSize,cardSize*xsize,cardSize*15,cardSize*10);//カードタイプ枠
+                        pop();
+                    }else if(i!=3){
+                        quad(cardX+(13-5+(xsize*i/4))*cardSize,cardY+251*cardSize,cardX+(13-5+(xsize*(i+1)/4))*cardSize,cardY+251*cardSize,cardX+(13+5+(xsize*(i+1)/4))*cardSize,cardY+264*cardSize,cardX+(13+5+(xsize*i/4))*cardSize,cardY+264*cardSize);
+                    }else if(i==3){
+                        rect(cardX+(15+(xsize*3/4))*cardSize,cardY+251*cardSize,cardSize*(xsize/4-6),cardSize*13,cardSize*10);
+                        quad(cardX+(13-5+(xsize*3/4))*cardSize,cardY+251*cardSize,cardX+(13+5+2+(xsize*3/4))*cardSize,cardY+251*cardSize,cardX+(13+5+2+(xsize*3/4))*cardSize,cardY+264*cardSize,cardX+(13+5+(xsize*3/4))*cardSize,cardY+264*cardSize);
+                    }
+                }else if(trueCount==5){
+                    multiColorSelect();
+                    if(i==0){
+                        strokeWeight(3*cardSize);
+                        if(cardType=='クリーチャー'||cardType=='進化クリーチャー'||cardContent[4].value()!=''){
+                            rect(cardX+2*cardSize,cardY+365*cardSize,50*cardSize,1*cardSize);
+                        }else{
+                            rect(cardX+2*cardSize,cardY+388*cardSize,50*cardSize,1*cardSize);
+                        }
+                    }else if(i==1){
+                        if(cardType=='クリーチャー'||cardType=='進化クリーチャー'||cardContent[4].value()!=''){
+                            push();
+                            strokeWeight(3*cardSize);
+                            rect(cardX+52*cardSize,cardY+365*cardSize,16*cardSize,1*cardSize);
+                            rect(cardX+83*cardSize,cardY+388*cardSize,30*cardSize,1*cardSize);
+                            rectMode(CENTER);
+                            translate(cardX+75*cardSize,cardY+374*cardSize);
+                            rotate(64);
+                            rect(3*cardSize,0,26*cardSize,1*cardSize,1*cardSize);
+                            pop();
+                        }else{
+                            strokeWeight(3*cardSize);
+                            rect(cardX+52*cardSize,cardY+388*cardSize,61*cardSize,1*cardSize);
+                        }
+                    }else if(i==2){
+                        strokeWeight(3*cardSize);
+                        rect(cardX+116*cardSize,cardY+388*cardSize,75*cardSize,1*cardSize);
+                    }else if(i==3){
+                        strokeWeight(3*cardSize);
+                        rect(cardX+191*cardSize,cardY+388*cardSize,55*cardSize,1*cardSize);
+                    }else{
+                        strokeWeight(3*cardSize);
+                        rect(cardX+246*cardSize,cardY+388*cardSize,53*cardSize,1*cardSize,2);
+                    }
+                    strokeWeight(0);
+                    let arc1=198+i*72;
+                    if(arc1>360)arc1-=360;
+                    let arc2=270+i*72;
+                    if(arc2<0)arc2+=360;
+                    arc(cardX+29*cardSize,cardY+26*cardSize,37*cardSize,37*cardSize,arc1,arc2,PIE);
+                    arc(cardX+150*cardSize,cardY+373*cardSize,37*cardSize,37*cardSize,arc1,arc2,PIE);
+                    if(i==0){//カードタイプ欄の色
+                        push();
+                        strokeWeight(3*cardSize);
+                        stroke("#261817");
+                        rect(cardX+10*cardSize,cardY+250*cardSize,cardSize*xsize,cardSize*15,cardSize*10);//カードタイプ枠
+                        pop();
+                    }else if(i!=4){
+                        quad(cardX+(13-5+(xsize*i/5))*cardSize,cardY+251*cardSize,cardX+(13-5+(xsize*(i+1)/5))*cardSize,cardY+251*cardSize,cardX+(13+5+(xsize*(i+1)/5))*cardSize,cardY+264*cardSize,cardX+(13+5+(xsize*i/5))*cardSize,cardY+264*cardSize);
+                    }else if(i==4){
+                        rect(cardX+(9+(xsize*4/5))*cardSize,cardY+251*cardSize,cardSize*(xsize/5),cardSize*13,cardSize*10);
+                        quad(cardX+(13-5+(xsize*4/5))*cardSize,cardY+251*cardSize,cardX+(13+5+(xsize*4/5))*cardSize,cardY+251*cardSize,cardX+(13+5+(xsize*4/5))*cardSize,cardY+264*cardSize,cardX+(13+5+(xsize*4/5))*cardSize,cardY+264*cardSize);
+                        fill("#CA252F");
+                        quad(cardX+(13-5+(xsize*3/5))*cardSize,cardY+251*cardSize,cardX+(13-5+(xsize*4/5))*cardSize,cardY+251*cardSize,cardX+(13+5+(xsize*4/5))*cardSize,cardY+264*cardSize,cardX+(13+5+(xsize*3/5))*cardSize,cardY+264*cardSize);
+                    }
+                }
+            }
+            fill("#261817");
+            rect(cardX+4*cardSize,cardY+245*cardSize,12*cardSize,19*cardSize);
+            noFill();
+            stroke("#261817");
+            strokeWeight(3*cardSize);
+            circle(cardX+150*cardSize,cardY+373*cardSize,40*cardSize);//下部マナコスト枠
         } 
+}
+
+function multiColorSelect(){
+    if(iro[0]==true){
+            stroke("#F5EA5C");
+            fill("#F5EA5C");
+            iro[0]=false;
+        }else if(iro[1]==true){
+            stroke("#3DAFF6");
+            fill("#3DAFF6");
+            iro[1]=false;
+        }else if(iro[2]==true){
+            stroke("#8D8787");
+            fill("#8D8787");
+            iro[2]=false;
+        }else if(iro[3]==true){
+            stroke("#CA252F");
+            fill("#CA252F");
+            iro[3]=false;
+        }else if(iro[4]==true){
+            stroke("#2BB53C");
+            fill("#2BB53C");
+            iro[4]=false;
+        }
 }
 
 function cardSave(){
@@ -143,42 +378,42 @@ function cardTypeSelect(){
 }
 
 function cardContentDraw(){
-    strokeWeight(1);
+    strokeWeight(1*cardSize);
     stroke("black");
     fill("black");
-    textSize(16);
+    textSize(16*cardSize);
     textAlign(CENTER);
-    text(cardContent[0].value(),465,83);//クリーチャー欄
-    textSize(8);
+    text(cardContent[0].value(),cardX+165*cardSize,cardY+43*cardSize);//クリーチャー欄
+    textSize(8*cardSize);
     textlong=textWidth(cardContent[3].value());
-    if(textlong<=50){
+    if(textlong<=(50*cardSize)){
         textAlign(CENTER);
-        text(cardContent[3].value(),346,300);//カードタイプ欄
+        text(cardContent[3].value(),cardX+46*cardSize,cardY+260*cardSize);//カードタイプ欄
     }else{
         textAlign(LEFT);
-        text(cardContent[3].value(),325,300);//カードタイプ欄
+        text(cardContent[3].value(),cardX+25*cardSize,cardY+260*cardSize);//カードタイプ欄
     }
-    textSize(20);
-    strokeWeight(3);
+    textSize(20*cardSize);
+    strokeWeight(3*cardSize);
     fill("white");
     textAlign(CENTER);
-    text(cardContent[2].value(),329,73);//マナコスト欄
-    textSize(7);
+    text(cardContent[2].value(),cardX+29*cardSize,cardY+33*cardSize);//マナコスト欄
+    textSize(7*cardSize);
     strokeWeight(0);
     stroke("white");
     textAlign(CENTER);
-    text(cardContent[1].value(),465,96);//種族欄
-    textSize(18);
+    text(cardContent[1].value(),cardX+165*cardSize,cardY+56*cardSize);//種族欄
+    textSize(18*cardSize);
     fill("white");
     textAlign(CENTER);
-    text(cardContent[4].value(),340,430);//パワー欄
+    text(cardContent[4].value(),cardX+40*cardSize,cardY+390*cardSize);//パワー欄
     push();
-    textSize(20);
-    strokeWeight(3);
+    textSize(20*cardSize);
+    strokeWeight(3*cardSize);
     fill("white");
     stroke("black");
     textAlign(CENTER,CENTER);//マナ埋め時コスト
-    translate(450,414);
+    translate(cardX+150*cardSize,cardY+374*cardSize);
     rotate(180)
     text("1",0,0);
     rotate(180);
@@ -228,15 +463,15 @@ function updateText(){
           lines[i] = '■'; 
         }
     }
-    textup=lines.join('\n');
+    textup=lines.join('。\n');
     for(let i=0;i<keyword.length;i++){
         if(cardText[keyword.length-i-1].checked()){
             textup='■'+keyword[keyword.length-i-1]+'\n'+textup;
         }
         
     }
-    textSize(8);
+    textSize(8*cardSize);
     fill("black");
     textAlign(LEFT);
-    text(textup,320,320,550);
+    text(textup,cardX+20*cardSize,cardY+280*cardSize);
 }
