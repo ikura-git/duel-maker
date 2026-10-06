@@ -33,13 +33,13 @@ function draw() {
         }
     }
     cardContentDraw();
-    if(cardType=='クリーチャー'||cardType=='進化クリーチャー'){
+    if(cardType=='クリーチャー'||cardType=='進化クリーチャー'||cardType=='その他'){
         cards.show();//クリーチャーならパワー欄の表示
     }else{
         cards.hide();
+        cards.value('');
     }
     updateText();
-    
 }
 
 function cardDraw(){
@@ -58,7 +58,7 @@ function cardDraw(){
     fill("#261817");
     rect(cardX+50*cardSize,cardY+24*cardSize,241*cardSize,33*cardSize);//種族欄
     triangle(cardX+47*cardSize,cardY+52*cardSize,cardX+47*cardSize,cardY+24*cardSize,cardX+35*cardSize,cardY+24*cardSize);
-    if(cardType=='クリーチャー'||cardType=='進化クリーチャー'){
+    if(cardType=='クリーチャー'||cardType=='進化クリーチャー'||cardContent[4].value()!=''){
         rect(cardX+15*cardSize,cardY+363*cardSize,58*cardSize,33*cardSize,1);//パワー欄
         triangle(cardX+75*cardSize,cardY+368*cardSize,cardX+70*cardSize,cardY+395*cardSize,cardX+86*cardSize,cardY+390*cardSize);
     }
@@ -99,7 +99,7 @@ function colorSelect(){//色によって異なるもの
             stroke("#E9F7FF");
             fill("#E9F7FF");
         }
-        if(cardType=='クリーチャー'||cardType=='進化クリーチャー'){
+        if(cardType=='クリーチャー'||cardType=='進化クリーチャー'||cardContent[4].value()!=''){
             rect(cardX+84*cardSize,cardY+388*cardSize,215*cardSize,1*cardSize);//下部の文明の線
             rect(cardX+2*cardSize,cardY+365*cardSize,68*cardSize,1*cardSize);
             push();
@@ -129,15 +129,20 @@ function colorSelect(){//色によって異なるもの
                 if(trueCount==2){
                     multiColorSelect();
                     if(i==0){
-                        push();
-                        strokeWeight(3*cardSize);
-                        rect(cardX+2*cardSize,cardY+365*cardSize,68*cardSize,1*cardSize);
-                        rect(cardX+84*cardSize,cardY+388*cardSize,68*cardSize,1*cardSize);
-                        rectMode(CENTER);
-                        translate(cardX+75*cardSize,cardY+374*cardSize);
-                        rotate(64);
-                        rect(3*cardSize,0,26*cardSize,1*cardSize,1*cardSize);
-                        pop();
+                        if(cardType=='クリーチャー'||cardType=='進化クリーチャー'||cardContent[4].value()!=''){
+                            push();
+                            strokeWeight(3*cardSize);
+                            rect(cardX+2*cardSize,cardY+365*cardSize,68*cardSize,1*cardSize);
+                            rect(cardX+84*cardSize,cardY+388*cardSize,68*cardSize,1*cardSize);
+                            rectMode(CENTER);
+                            translate(cardX+75*cardSize,cardY+374*cardSize);
+                            rotate(64);
+                            rect(3*cardSize,0,26*cardSize,1*cardSize,1*cardSize);
+                            pop();
+                        }else{
+                            strokeWeight(3*cardSize);
+                            rect(cardX+2*cardSize,cardY+388*cardSize,150*cardSize,1*cardSize);
+                        }
                     }else{
                         strokeWeight(3*cardSize);
                         rect(cardX+165*cardSize,cardY+388*cardSize,134*cardSize,1*cardSize);
@@ -162,15 +167,20 @@ function colorSelect(){//色によって異なるもの
                 }else if(trueCount==3){
                     multiColorSelect();
                     if(i==0){
-                        push();
-                        strokeWeight(3*cardSize);
-                        rect(cardX+2*cardSize,cardY+365*cardSize,68*cardSize,1*cardSize);
-                        rect(cardX+82*cardSize,cardY+388*cardSize,5*cardSize,1*cardSize);
-                        rectMode(CENTER);
-                        translate(cardX+75*cardSize,cardY+374*cardSize);
-                        rotate(64);
-                        rect(3*cardSize,0,26*cardSize,1*cardSize,1*cardSize);
-                        pop();
+                        if(cardType=='クリーチャー'||cardType=='進化クリーチャー'||cardContent[4].value()!=''){
+                            push();
+                            strokeWeight(3*cardSize);
+                            rect(cardX+2*cardSize,cardY+365*cardSize,68*cardSize,1*cardSize);
+                            rect(cardX+82*cardSize,cardY+388*cardSize,5*cardSize,1*cardSize);
+                            rectMode(CENTER);
+                            translate(cardX+75*cardSize,cardY+374*cardSize);
+                            rotate(64);
+                            rect(3*cardSize,0,26*cardSize,1*cardSize,1*cardSize);
+                            pop();
+                        }else{
+                           strokeWeight(3*cardSize);
+                            rect(cardX+2*cardSize,cardY+388*cardSize,87*cardSize,1*cardSize); 
+                        }
                     }else if(i==1){
                         strokeWeight(3*cardSize);
                         rect(cardX+87*cardSize,cardY+388*cardSize,128*cardSize,1*cardSize);
@@ -201,17 +211,26 @@ function colorSelect(){//色によって異なるもの
                     multiColorSelect();
                     if(i==0){
                         strokeWeight(3*cardSize);
-                        rect(cardX+2*cardSize,cardY+365*cardSize,60*cardSize,1*cardSize);
+                        if(cardType=='クリーチャー'||cardType=='進化クリーチャー'||cardContent[4].value()!=''){
+                            rect(cardX+2*cardSize,cardY+365*cardSize,60*cardSize,1*cardSize);
+                        }else{
+                            rect(cardX+2*cardSize,cardY+388*cardSize,60*cardSize,1*cardSize);
+                        }
                     }else if(i==1){
-                        push();
-                        strokeWeight(3*cardSize);
-                        rect(cardX+62*cardSize,cardY+365*cardSize,6*cardSize,1*cardSize);
-                        rect(cardX+84*cardSize,cardY+388*cardSize,68*cardSize,1*cardSize);
-                        rectMode(CENTER);
-                        translate(cardX+75*cardSize,cardY+374*cardSize);
-                        rotate(64);
-                        rect(3*cardSize,0,26*cardSize,1*cardSize,1*cardSize);
-                        pop();
+                        if(cardType=='クリーチャー'||cardType=='進化クリーチャー'||cardContent[4].value()!=''){
+                            push();
+                            strokeWeight(3*cardSize);
+                            rect(cardX+62*cardSize,cardY+365*cardSize,6*cardSize,1*cardSize);
+                            rect(cardX+84*cardSize,cardY+388*cardSize,68*cardSize,1*cardSize);
+                            rectMode(CENTER);
+                            translate(cardX+75*cardSize,cardY+374*cardSize);
+                            rotate(64);
+                            rect(3*cardSize,0,26*cardSize,1*cardSize,1*cardSize);
+                            pop();
+                        }else{
+                            strokeWeight(3*cardSize);
+                            rect(cardX+62*cardSize,cardY+388*cardSize,90*cardSize,1*cardSize); 
+                        }
                     }else if(i==2){
                         strokeWeight(3*cardSize);
                         rect(cardX+165*cardSize,cardY+388*cardSize,75*cardSize,1*cardSize);
@@ -240,6 +259,39 @@ function colorSelect(){//色によって異なるもの
                     }
                 }else if(trueCount==5){
                     multiColorSelect();
+                    if(i==0){
+                        strokeWeight(3*cardSize);
+                        if(cardType=='クリーチャー'||cardType=='進化クリーチャー'||cardContent[4].value()!=''){
+                            rect(cardX+2*cardSize,cardY+365*cardSize,50*cardSize,1*cardSize);
+                        }else{
+                            rect(cardX+2*cardSize,cardY+388*cardSize,50*cardSize,1*cardSize);
+                        }
+                    }else if(i==1){
+                        if(cardType=='クリーチャー'||cardType=='進化クリーチャー'||cardContent[4].value()!=''){
+                            push();
+                            strokeWeight(3*cardSize);
+                            rect(cardX+52*cardSize,cardY+365*cardSize,16*cardSize,1*cardSize);
+                            rect(cardX+83*cardSize,cardY+388*cardSize,30*cardSize,1*cardSize);
+                            rectMode(CENTER);
+                            translate(cardX+75*cardSize,cardY+374*cardSize);
+                            rotate(64);
+                            rect(3*cardSize,0,26*cardSize,1*cardSize,1*cardSize);
+                            pop();
+                        }else{
+                            strokeWeight(3*cardSize);
+                            rect(cardX+52*cardSize,cardY+388*cardSize,61*cardSize,1*cardSize);
+                        }
+                    }else if(i==2){
+                        strokeWeight(3*cardSize);
+                        rect(cardX+116*cardSize,cardY+388*cardSize,75*cardSize,1*cardSize);
+                    }else if(i==3){
+                        strokeWeight(3*cardSize);
+                        rect(cardX+191*cardSize,cardY+388*cardSize,55*cardSize,1*cardSize);
+                    }else{
+                        strokeWeight(3*cardSize);
+                        rect(cardX+246*cardSize,cardY+388*cardSize,53*cardSize,1*cardSize,2);
+                    }
+                    strokeWeight(0);
                     let arc1=198+i*72;
                     if(arc1>360)arc1-=360;
                     let arc2=270+i*72;
