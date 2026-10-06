@@ -68,7 +68,7 @@ function cardDraw(){
     colorSelect();
     fill("#261817");
     stroke("#261817");
-    rect(cardX+2*cardSize,cardY+245*cardSize,12*cardSize,17*cardSize);
+    rect(cardX+2*cardSize,cardY+245*cardSize,12*cardSize,19*cardSize);
 }
 
 function colorSelect(){//色によって異なるもの
@@ -114,6 +114,11 @@ function colorSelect(){//色によって異なるもの
         circle(cardX+150*cardSize,cardY+373*cardSize,40*cardSize);//下部マナコスト枠
         }else{
             stroke("#261817");
+            if(textlong<=(50*cardSize)){
+                rect(cardX+10*cardSize,cardY+250*cardSize,cardSize*70,cardSize*15,cardSize*10);//カードタイプ枠
+            }else{
+                rect(cardX+10*cardSize,cardY+250*cardSize,cardSize*(70+textlong/2),cardSize*15,cardSize*10);//カードタイプ枠
+            }
             circle(cardX+29*cardSize,cardY+26*cardSize,40*cardSize);//左上マナコスト枠
             circle(cardX+150*cardSize,cardY+373*cardSize,40*cardSize);//下部マナコスト枠
             strokeWeight(0);
@@ -126,6 +131,18 @@ function colorSelect(){//色によって異なるもの
                     if(arc2<0)arc2+=360;
                     arc(cardX+29*cardSize,cardY+26*cardSize,37*cardSize,37*cardSize,arc1,arc2,PIE);
                     arc(cardX+150*cardSize,cardY+373*cardSize,37*cardSize,37*cardSize,arc1,arc2,PIE);
+                    if(i==0){
+                        push();
+                        strokeWeight(3*cardSize);
+                        stroke("#261817");
+                        rect(cardX+10*cardSize,cardY+250*cardSize,cardSize*70,cardSize*15,cardSize*10);
+                        pop()
+                    }else{
+                        rect(cardX+45*cardSize,cardY+251*cardSize,cardSize*34,cardSize*13,cardSize*10);
+                        quad(cardX+38*cardSize,cardY+251*cardSize,cardX+58*cardSize,cardY+251*cardSize,cardX+58*cardSize,cardY+264*cardSize,cardX+48*cardSize,cardY+264*cardSize);
+                    }
+                    fill("#261817");
+                    rect(cardX+4*cardSize,cardY+245*cardSize,12*cardSize,19*cardSize);
                 }else if(trueCount==3){
                     multiColorSelect();
                     let arc1=150+i*120;
