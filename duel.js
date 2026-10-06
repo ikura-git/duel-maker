@@ -7,6 +7,7 @@ let cardContent=[],textSup=['カード名','種族','マナコスト','カード
 let saveButton;
 let cardTextarea;
 let cardText=[],keyword=['S・トリガー','G・ストライク','W・ブレイカー','スピードアタッカー','ジャストダイバー','マッハファイター','スレイヤー','ブロッカー'];
+let colorSelected=[false,false,false,false,false];
 
 function setup() {
     createCanvas(620,600);
@@ -18,6 +19,7 @@ function setup() {
 }
 
 function draw() {
+    
     background("lightblue");
     cardDraw();
     trueCount=0;
@@ -36,6 +38,7 @@ function draw() {
         cards.hide();
     }
     updateText();
+    
 }
 
 function cardDraw(){
@@ -65,7 +68,7 @@ function cardDraw(){
     colorSelect();
     fill("#261817");
     stroke("#261817");
-    rect(cardX+2*cardSize,cardY+245*cardSize,13*cardSize,17*cardSize);
+    rect(cardX+2*cardSize,cardY+245*cardSize,12*cardSize,17*cardSize);
 }
 
 function colorSelect(){//色によって異なるもの
@@ -109,7 +112,79 @@ function colorSelect(){//色によって異なるもの
         }
         circle(cardX+29*cardSize,cardY+26*cardSize,40*cardSize);//左上マナコスト枠
         circle(cardX+150*cardSize,cardY+373*cardSize,40*cardSize);//下部マナコスト枠
+        }else{
+            stroke("#261817");
+            circle(cardX+29*cardSize,cardY+26*cardSize,40*cardSize);//左上マナコスト枠
+            circle(cardX+150*cardSize,cardY+373*cardSize,40*cardSize);//下部マナコスト枠
+            strokeWeight(0);
+            for(let i=0;i<trueCount;i++){
+                if(trueCount==2){
+                    multiColorSelect();
+                    let arc1=45+i*180;
+                    if(arc1>360)arc1-=360;
+                    let arc2=225+i*180;
+                    if(arc2<0)arc2+=360;
+                    arc(cardX+29*cardSize,cardY+26*cardSize,37*cardSize,37*cardSize,arc1,arc2,PIE);
+                    arc(cardX+150*cardSize,cardY+373*cardSize,37*cardSize,37*cardSize,arc1,arc2,PIE);
+                }else if(trueCount==3){
+                    multiColorSelect();
+                    let arc1=150+i*120;
+                    if(arc1>360)arc1-=360;
+                    let arc2=270+i*120;
+                    if(arc2<0)arc2+=360;
+                    arc(cardX+29*cardSize,cardY+26*cardSize,37*cardSize,37*cardSize,arc1,arc2,PIE);
+                    arc(cardX+150*cardSize,cardY+373*cardSize,37*cardSize,37*cardSize,arc1,arc2,PIE);
+                }else if(trueCount==4){
+                    multiColorSelect();
+                    let arc1=135+i*90;
+                    if(arc1>360)arc1-=360;
+                    let arc2=225+i*90;
+                    if(arc2<0)arc2+=360;
+                    arc(cardX+29*cardSize,cardY+26*cardSize,37*cardSize,37*cardSize,arc1,arc2,PIE);
+                    arc(cardX+150*cardSize,cardY+373*cardSize,37*cardSize,37*cardSize,arc1,arc2,PIE);
+                }else if(trueCount==4){
+                    multiColorSelect();
+                    let arc1=135+i*90;
+                    if(arc1>360)arc1-=360;
+                    let arc2=225+i*90;
+                    if(arc2<0)arc2+=360;
+                    arc(cardX+29*cardSize,cardY+26*cardSize,37*cardSize,37*cardSize,arc1,arc2,PIE);
+                    arc(cardX+150*cardSize,cardY+373*cardSize,37*cardSize,37*cardSize,arc1,arc2,PIE);
+                }else if(trueCount==5){
+                    multiColorSelect();
+                    let arc1=198+i*72;
+                    if(arc1>360)arc1-=360;
+                    let arc2=270+i*72;
+                    if(arc2<0)arc2+=360;
+                    arc(cardX+29*cardSize,cardY+26*cardSize,37*cardSize,37*cardSize,arc1,arc2,PIE);
+                    arc(cardX+150*cardSize,cardY+373*cardSize,37*cardSize,37*cardSize,arc1,arc2,PIE);
+                }
+            }
         } 
+}
+
+function multiColorSelect(){
+    if(iro[0]==true){
+            stroke("#F5EA5C");
+            fill("#F5EA5C");
+            iro[0]=false;
+        }else if(iro[1]==true){
+            stroke("#3DAFF6");
+            fill("#3DAFF6");
+            iro[1]=false;
+        }else if(iro[2]==true){
+            stroke("#8D8787");
+            fill("#8D8787");
+            iro[2]=false;
+        }else if(iro[3]==true){
+            stroke("#CA252F");
+            fill("#CA252F");
+            iro[3]=false;
+        }else if(iro[4]==true){
+            stroke("#2BB53C");
+            fill("#2BB53C");
+            iro[4]=false;
+        }
 }
 
 function cardSave(){
