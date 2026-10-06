@@ -405,12 +405,33 @@ function rareTypeSelect(){
 
 function cardContentDraw(){
     strokeWeight(1*cardSize);
+    if(rareSelect.value()!='SR'){
+        stroke("black");
+        fill("black");
+        textSize(16*cardSize);
+        textAlign(CENTER);
+        text(cardContent[0].value(),cardX+165*cardSize,cardY+43*cardSize);//クリーチャー欄
+        textSize(10*cardSize);
+        strokeWeight(0*cardSize);
+        stroke("white");
+        fill("white");
+        textAlign(CENTER);
+        text(cardContent[1].value(),cardX+165*cardSize,cardY+56*cardSize);//種族欄
+    }else{
+        stroke("black");
+        fill("white");
+        textSize(16*cardSize);
+        strokeWeight(2*cardSize);
+        textAlign(CENTER);
+        text(cardContent[0].value(),cardX+165*cardSize,cardY+43*cardSize);//クリーチャー欄
+        textSize(10*cardSize);
+        textAlign(CENTER);
+        text(cardContent[1].value(),cardX+165*cardSize,cardY+59*cardSize);//種族欄
+    }
+    strokeWeight(1*cardSize);
+    textSize(8*cardSize);
     stroke("black");
     fill("black");
-    textSize(16*cardSize);
-    textAlign(CENTER);
-    text(cardContent[0].value(),cardX+165*cardSize,cardY+43*cardSize);//クリーチャー欄
-    textSize(8*cardSize);
     textlong=textWidth(cardContent[3].value());
     if(textlong<=(50*cardSize)){
         textAlign(CENTER);
@@ -421,18 +442,10 @@ function cardContentDraw(){
     }
     textSize(20*cardSize);
     strokeWeight(3*cardSize);
+    stroke("black");
     fill("white");
     textAlign(CENTER);
     text(cardContent[2].value(),cardX+29*cardSize,cardY+33*cardSize);//マナコスト欄
-    textSize(7*cardSize);
-    strokeWeight(0);
-    stroke("white");
-    textAlign(CENTER);
-    text(cardContent[1].value(),cardX+165*cardSize,cardY+56*cardSize);//種族欄
-    textSize(18*cardSize);
-    fill("white");
-    textAlign(CENTER);
-    text(cardContent[4].value(),cardX+40*cardSize,cardY+390*cardSize);//パワー欄
     push();
     textSize(20*cardSize);
     strokeWeight(3*cardSize);
@@ -444,6 +457,12 @@ function cardContentDraw(){
     text("1",0,0);
     rotate(180);
     pop();
+    textSize(18*cardSize);
+    strokeWeight(0);
+    fill("white");
+    textAlign(CENTER);
+    text(cardContent[4].value(),cardX+40*cardSize,cardY+390*cardSize);//パワー欄
+    
 }
 
 function HTMLyouso(){
@@ -487,18 +506,26 @@ function updateText(){
         if (lines[i].length > 0) {
         lines[i] = '■ ' + lines[i];
         } else {
-          lines[i] = '■'; 
+          lines[i] = '■ '; 
         }
     }
     textup=lines.join('。\n');
     for(let i=0;i<keyword.length;i++){
         if(cardText[keyword.length-i-1].checked()){
-            textup='■'+keyword[keyword.length-i-1]+'\n'+textup;
+            textup='■ '+keyword[keyword.length-i-1]+'\n'+textup;
         }
         
     }
-    textSize(8*cardSize);
-    fill("black");
+    textSize(9*cardSize);
+    if(rareSelect.value()!='SR'){
+        strokeWeight(0);
+        fill("black");
+        stroke("black");
+    }else{
+        strokeWeight(2*cardSize);
+        fill("white");
+        stroke("black");
+    }
     textAlign(LEFT);
     text(textup,cardX+20*cardSize,cardY+280*cardSize);
 }
