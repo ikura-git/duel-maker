@@ -11,7 +11,7 @@
 以下のデプロイでも一応動作しますが、
 自身でダウンロードしてindex.htmlを開くほうが安定して動作すると思います。
 
-https://duel-maker-rtepxm62611c.ikura-git.deno.net/
+[https://duel-maker-rtepxm62611c.ikura-git.deno.net/](https://duel-maker-sx1mwmscb7rz.ikura-git.deno.net/)
 
 ### ※このアプリは現在開発中です。今後実装するかもしれないものを下に示します
 * 画面表示の改善
