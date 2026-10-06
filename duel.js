@@ -8,6 +8,7 @@ let saveButton;
 let cardTextarea;
 let cardText=[],keyword=['S・トリガー','G・ストライク','W・ブレイカー','スピードアタッカー','ジャストダイバー','マッハファイター','スレイヤー','ブロッカー'];
 let colorSelected=[false,false,false,false,false];
+let xsize;
 
 function setup() {
     createCanvas(620,600);
@@ -65,6 +66,12 @@ function cardDraw(){
     stroke("#EEE2E2");
     rect(cardX+50*cardSize,cardY+16*cardSize,233*cardSize,30*cardSize);//クリーチャー名前欄
     triangle(cardX+47*cardSize,cardY+41*cardSize,cardX+47*cardSize,cardY+24*cardSize,cardX+40*cardSize,cardY+24*cardSize);
+    if(textlong<=(50*cardSize)){
+                xsize=70;
+            }else{
+                if(cardSize==1)xsize=(textlong+25);
+                if(cardSize==1.5)xsize=(textlong-5);
+            }
     colorSelect();
     fill("#261817");
     stroke("#261817");
@@ -106,19 +113,15 @@ function colorSelect(){//色によって異なるもの
         }
         stroke("#261817");
         if(textlong<=(50*cardSize)){
-            rect(cardX+10*cardSize,cardY+250*cardSize,cardSize*70,cardSize*15,cardSize*10);//カードタイプ枠
+            rect(cardX+10*cardSize,cardY+250*cardSize,cardSize*xsize,cardSize*15,cardSize*10);//カードタイプ枠
         }else{
-            rect(cardX+10*cardSize,cardY+250*cardSize,cardSize*(70+textlong/2),cardSize*15,cardSize*10);//カードタイプ枠
+            rect(cardX+10*cardSize,cardY+250*cardSize,cardSize*xsize,cardSize*15,cardSize*10);//カードタイプ枠
         }
         circle(cardX+29*cardSize,cardY+26*cardSize,40*cardSize);//左上マナコスト枠
         circle(cardX+150*cardSize,cardY+373*cardSize,40*cardSize);//下部マナコスト枠
         }else{
             stroke("#261817");
-            if(textlong<=(50*cardSize)){
-                rect(cardX+10*cardSize,cardY+250*cardSize,cardSize*70,cardSize*15,cardSize*10);//カードタイプ枠
-            }else{
-                rect(cardX+10*cardSize,cardY+250*cardSize,cardSize*(70+textlong/2),cardSize*15,cardSize*10);//カードタイプ枠
-            }
+            rect(cardX+10*cardSize,cardY+250*cardSize,cardSize*xsize,cardSize*15,cardSize*10);//カードタイプ枠
             circle(cardX+29*cardSize,cardY+26*cardSize,40*cardSize);//左上マナコスト枠
             circle(cardX+150*cardSize,cardY+373*cardSize,40*cardSize);//下部マナコスト枠
             strokeWeight(0);
@@ -131,18 +134,16 @@ function colorSelect(){//色によって異なるもの
                     if(arc2<0)arc2+=360;
                     arc(cardX+29*cardSize,cardY+26*cardSize,37*cardSize,37*cardSize,arc1,arc2,PIE);
                     arc(cardX+150*cardSize,cardY+373*cardSize,37*cardSize,37*cardSize,arc1,arc2,PIE);
-                    if(i==0){
+                    if(i==0){//カードタイプ欄の色
                         push();
                         strokeWeight(3*cardSize);
                         stroke("#261817");
-                        rect(cardX+10*cardSize,cardY+250*cardSize,cardSize*70,cardSize*15,cardSize*10);
-                        pop()
+                        rect(cardX+10*cardSize,cardY+250*cardSize,cardSize*xsize,cardSize*15,cardSize*10);//カードタイプ枠
+                        pop();
                     }else{
-                        rect(cardX+45*cardSize,cardY+251*cardSize,cardSize*34,cardSize*13,cardSize*10);
-                        quad(cardX+38*cardSize,cardY+251*cardSize,cardX+58*cardSize,cardY+251*cardSize,cardX+58*cardSize,cardY+264*cardSize,cardX+48*cardSize,cardY+264*cardSize);
+                        rect(cardX+(13+(xsize/2))*cardSize,cardY+251*cardSize,cardSize*(xsize/2-4),cardSize*13,cardSize*10);
+                        quad(cardX+(5+(xsize/2))*cardSize,cardY+251*cardSize,cardX+(25+(xsize/2))*cardSize,cardY+251*cardSize,cardX+(25+(xsize/2))*cardSize,cardY+264*cardSize,cardX+(15+(xsize/2))*cardSize,cardY+264*cardSize);
                     }
-                    fill("#261817");
-                    rect(cardX+4*cardSize,cardY+245*cardSize,12*cardSize,19*cardSize);
                 }else if(trueCount==3){
                     multiColorSelect();
                     let arc1=150+i*120;
@@ -151,6 +152,18 @@ function colorSelect(){//色によって異なるもの
                     if(arc2<0)arc2+=360;
                     arc(cardX+29*cardSize,cardY+26*cardSize,37*cardSize,37*cardSize,arc1,arc2,PIE);
                     arc(cardX+150*cardSize,cardY+373*cardSize,37*cardSize,37*cardSize,arc1,arc2,PIE);
+                    if(i==0){//カードタイプ欄の色
+                        push();
+                        strokeWeight(3*cardSize);
+                        stroke("#261817");
+                        rect(cardX+10*cardSize,cardY+250*cardSize,cardSize*xsize,cardSize*15,cardSize*10);//カードタイプ枠
+                        pop();
+                    }else if(i==1){
+                        quad(cardX+(13-5+(xsize/3))*cardSize,cardY+251*cardSize,cardX+(13-5+(xsize*2/3))*cardSize,cardY+251*cardSize,cardX+(13+5+(xsize*2/3))*cardSize,cardY+264*cardSize,cardX+(13+5+(xsize/3))*cardSize,cardY+264*cardSize);
+                    }else if(i==2){
+                        rect(cardX+(16+(xsize*2/3))*cardSize,cardY+251*cardSize,cardSize*(xsize/3-7),cardSize*13,cardSize*10);
+                        quad(cardX+(13-5+(xsize*2/3))*cardSize,cardY+251*cardSize,cardX+(13+10+(xsize*2/3))*cardSize,cardY+251*cardSize,cardX+(13+10+(xsize*2/3))*cardSize,cardY+264*cardSize,cardX+(13+5+(xsize*2/3))*cardSize,cardY+264*cardSize);
+                    }
                 }else if(trueCount==4){
                     multiColorSelect();
                     let arc1=135+i*90;
@@ -159,14 +172,18 @@ function colorSelect(){//色によって異なるもの
                     if(arc2<0)arc2+=360;
                     arc(cardX+29*cardSize,cardY+26*cardSize,37*cardSize,37*cardSize,arc1,arc2,PIE);
                     arc(cardX+150*cardSize,cardY+373*cardSize,37*cardSize,37*cardSize,arc1,arc2,PIE);
-                }else if(trueCount==4){
-                    multiColorSelect();
-                    let arc1=135+i*90;
-                    if(arc1>360)arc1-=360;
-                    let arc2=225+i*90;
-                    if(arc2<0)arc2+=360;
-                    arc(cardX+29*cardSize,cardY+26*cardSize,37*cardSize,37*cardSize,arc1,arc2,PIE);
-                    arc(cardX+150*cardSize,cardY+373*cardSize,37*cardSize,37*cardSize,arc1,arc2,PIE);
+                    if(i==0){//カードタイプ欄の色
+                        push();
+                        strokeWeight(3*cardSize);
+                        stroke("#261817");
+                        rect(cardX+10*cardSize,cardY+250*cardSize,cardSize*xsize,cardSize*15,cardSize*10);//カードタイプ枠
+                        pop();
+                    }else if(i!=3){
+                        quad(cardX+(13-5+(xsize*i/4))*cardSize,cardY+251*cardSize,cardX+(13-5+(xsize*(i+1)/4))*cardSize,cardY+251*cardSize,cardX+(13+5+(xsize*(i+1)/4))*cardSize,cardY+264*cardSize,cardX+(13+5+(xsize*i/4))*cardSize,cardY+264*cardSize);
+                    }else if(i==3){
+                        rect(cardX+(15+(xsize*3/4))*cardSize,cardY+251*cardSize,cardSize*(xsize/4-6),cardSize*13,cardSize*10);
+                        quad(cardX+(13-5+(xsize*3/4))*cardSize,cardY+251*cardSize,cardX+(13+5+2+(xsize*3/4))*cardSize,cardY+251*cardSize,cardX+(13+5+2+(xsize*3/4))*cardSize,cardY+264*cardSize,cardX+(13+5+(xsize*3/4))*cardSize,cardY+264*cardSize);
+                    }
                 }else if(trueCount==5){
                     multiColorSelect();
                     let arc1=198+i*72;
@@ -175,8 +192,24 @@ function colorSelect(){//色によって異なるもの
                     if(arc2<0)arc2+=360;
                     arc(cardX+29*cardSize,cardY+26*cardSize,37*cardSize,37*cardSize,arc1,arc2,PIE);
                     arc(cardX+150*cardSize,cardY+373*cardSize,37*cardSize,37*cardSize,arc1,arc2,PIE);
+                    if(i==0){//カードタイプ欄の色
+                        push();
+                        strokeWeight(3*cardSize);
+                        stroke("#261817");
+                        rect(cardX+10*cardSize,cardY+250*cardSize,cardSize*xsize,cardSize*15,cardSize*10);//カードタイプ枠
+                        pop();
+                    }else if(i!=4){
+                        quad(cardX+(13-5+(xsize*i/5))*cardSize,cardY+251*cardSize,cardX+(13-5+(xsize*(i+1)/5))*cardSize,cardY+251*cardSize,cardX+(13+5+(xsize*(i+1)/5))*cardSize,cardY+264*cardSize,cardX+(13+5+(xsize*i/5))*cardSize,cardY+264*cardSize);
+                    }else if(i==4){
+                        rect(cardX+(9+(xsize*4/5))*cardSize,cardY+251*cardSize,cardSize*(xsize/5),cardSize*13,cardSize*10);
+                        quad(cardX+(13-5+(xsize*4/5))*cardSize,cardY+251*cardSize,cardX+(13+5+(xsize*4/5))*cardSize,cardY+251*cardSize,cardX+(13+5+(xsize*4/5))*cardSize,cardY+264*cardSize,cardX+(13+5+(xsize*4/5))*cardSize,cardY+264*cardSize);
+                        fill("#CA252F");
+                        quad(cardX+(13-5+(xsize*3/5))*cardSize,cardY+251*cardSize,cardX+(13-5+(xsize*4/5))*cardSize,cardY+251*cardSize,cardX+(13+5+(xsize*4/5))*cardSize,cardY+264*cardSize,cardX+(13+5+(xsize*3/5))*cardSize,cardY+264*cardSize);
+                    }
                 }
             }
+            fill("#261817");
+            rect(cardX+4*cardSize,cardY+245*cardSize,12*cardSize,19*cardSize);
         } 
 }
 
