@@ -1,3 +1,4 @@
+let card;
 let cardX,cardY,cardSize;
 let img;//画像読み込み
 let colorPie=['光','水','闇','火','自然'];//文明
@@ -11,17 +12,20 @@ let cardText=[],keyword=['S・トリガー','G・ストライク','W・ブレイ
 let colorSelected=[false,false,false,false,false];
 let xsize;
 
+function preload(){
+    card=loadImage("mixel.jpg");
+}
+
 function setup() {
     createCanvas(620,600);
     background("lightblue");
     cardX=0,cardY=0;
-    cardSize=1.5;
+    cardSize=1;
     angleMode(DEGREES);
     HTMLyouso();
 }
 
 function draw() {
-    
     background("lightblue");
     cardDraw();
     trueCount=0;
@@ -34,7 +38,7 @@ function draw() {
         }
     }
     cardContentDraw();
-    if(cardType=='クリーチャー'||cardType=='進化クリーチャー'||cardType=='その他'){
+    if(cardType=='クリーチャー'||cardType=='進化クリーチャー'||cardType=='ツインパクト'||cardType=='その他'){
         cards.show();//クリーチャーならパワー欄の表示
     }else{
         cards.hide();
@@ -46,6 +50,8 @@ function draw() {
     rect(cardX+208*cardSize,cardY+365*cardSize,25*cardSize,15*cardSize,4*cardSize);
     fill("white");
     text(rareSelect.value(),cardX+220*cardSize,cardY+375*cardSize);
+    //image(card,0,0,300,400);
+    twinpactDraw();
 }
 
 function cardDraw(){
@@ -65,7 +71,7 @@ function cardDraw(){
         }
     }
     strokeWeight(3*cardSize);
-    if(rareSelect.value()!='SR'){
+    if(rareSelect.value()!='SR'&&cardType!='ツインパクト'){
         fill("#261817");
         stroke("#261817");
         rect(cardX+50*cardSize,cardY+24*cardSize,241*cardSize,33*cardSize);//種族欄
@@ -94,7 +100,8 @@ function cardDraw(){
 }
 
 function colorSelect(){//色によって異なるもの
-    if(trueCount==0||trueCount==1){
+    if(cardType!='ツインパクト'){
+        if(trueCount==0||trueCount==1){
         if(iro[0]==true){
             stroke("#F5EA5C");
             fill("#F5EA5C");
@@ -127,10 +134,12 @@ function colorSelect(){//色によって異なるもの
             rect(cardX+2*cardSize,cardY+388*cardSize,297*cardSize,1*cardSize);
         }
         stroke("#261817");
-        if(textlong<=(50*cardSize)){
-            rect(cardX+10*cardSize,cardY+250*cardSize,cardSize*xsize,cardSize*15,cardSize*10);//カードタイプ枠
-        }else{
-            rect(cardX+10*cardSize,cardY+250*cardSize,cardSize*xsize,cardSize*15,cardSize*10);//カードタイプ枠
+        if(cardType!='ツインパクト'){
+            if(textlong<=(50*cardSize)){
+                rect(cardX+10*cardSize,cardY+250*cardSize,cardSize*xsize,cardSize*15,cardSize*10);//カードタイプ枠
+            }else{
+                rect(cardX+10*cardSize,cardY+250*cardSize,cardSize*xsize,cardSize*15,cardSize*10);//カードタイプ枠
+            }
         }
         circle(cardX+29*cardSize,cardY+26*cardSize,40*cardSize);//左上マナコスト枠
         circle(cardX+150*cardSize,cardY+373*cardSize,40*cardSize);//下部マナコスト枠
@@ -335,7 +344,7 @@ function colorSelect(){//色によって異なるもの
             stroke("#261817");
             strokeWeight(3*cardSize);
             circle(cardX+150*cardSize,cardY+373*cardSize,40*cardSize);//下部マナコスト枠
-        } 
+        }} 
 }
 
 function multiColorSelect(){
@@ -387,6 +396,7 @@ function cardTypeSelect(){
     cardSelect.option('クリーチャー');
     cardSelect.option('進化クリーチャー');
     cardSelect.option('呪文');
+    cardSelect.option('ツインパクト');
     cardSelect.option('タマシード');
     cardSelect.option('その他');
     cardSelect.selected('クリーチャー');
@@ -528,4 +538,33 @@ function updateText(){
     }
     textAlign(LEFT);
     text(textup,cardX+20*cardSize,cardY+280*cardSize);
+}
+
+function twinpactDraw(){
+    if(cardType=='ツインパクト'){
+        background("lightblue");
+        cardDraw();
+        stroke("black");
+        fill("white");
+        textSize(16*cardSize);
+        strokeWeight(2*cardSize);
+        textAlign(CENTER);
+        push()
+        strokeWeight(3);
+        rect(cardX+10*cardSize,cardY+145*cardSize,cardSize*xsize,cardSize*15,cardSize*10);//カードタイプ枠
+        rect(cardX+10*cardSize,cardY+291*cardSize,cardSize*xsize,cardSize*15,cardSize*10);//カードタイプ枠
+        fill("#261817");
+        strokeWeight(0);
+        rect(cardX,cardY+50,16*cardSize,300*cardSize,3*cardSize,);
+        rect(cardX+280,cardY+190,20*cardSize,20*cardSize);
+        rectMode(CENTER);
+        translate(cardX+150*cardSize,cardY+225*cardSize);
+        rotate(346.2);
+        rect(0,0,290*cardSize,8*cardSize,3*cardSize,);
+        pop();
+        circle(cardX+270*cardSize,cardY+216*cardSize,40*cardSize);//右中央マナコスト枠
+        textAlign(CENTER);
+        text(cardContent[4].value(),cardX+40*cardSize,cardY+390*cardSize);//パワー欄
+        
+    }
 }
